@@ -13,6 +13,7 @@ public class PostRecipeReq {
     private List<String> recipeUrl;
     private List<String> Photo;
 
+
     private String recipeName;
     private String detail;
     private String makeTime;
