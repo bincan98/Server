@@ -83,6 +83,20 @@ public class RecipeDao {
         return newLinkList;
     }
 
+    // 레시피 등록시 재료첨부
+    public List<String> createRecipeIngredient(PostRecipeReq postRecipeReq, int recipeIdx){
+        List<String> igName = postRecipeReq.getIgName();
+        List newLinkList = new ArrayList<>();
+        if(igName != null){
+            for(String newigName:igName) {
+                String createRecipeIngredient = "insert into Ingredient(igName, recipeIdx) values (?,?)";
+                this.jdbcTemplate.update(createRecipeIngredient, newigName, recipeIdx);
+                newLinkList.add(newigName);
+            }
+        }
+        return newLinkList;
+    }
+
 // 레시피 좋아요 누른 전적이 있는지
     public int checkRecommend(PostRecomReq postRecomReq, int userIdx){
         String checkRecommendRecipeByUserIdx = "select exists(select *\n" +
