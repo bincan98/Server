@@ -118,6 +118,59 @@ public class UserController {
         }
     }
 
+    /**
+     * 회원정보 수정 API
+     * [PATCH] /users/{userIdx}/update
+     * @return BaseResponse<PatchUserRes>
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}/update")
+    public BaseResponse<PatchUserRes> updateUser(@RequestBody PatchUserReq patchUserReq, @PathVariable int userIdx){
+        // 아이디 입력 안했을때
+        if(patchUserReq.getUserId().length() == 0){
+            System.out.println("아이디가 입력되지 않았습니다.");
+            return new BaseResponse<>(USERS_EMPTY_ID);
+        }
 
+        // 비밀번호 칸에 입력 안했을때
+        if(patchUserReq.getUserPw_1().length() == 0 || patchUserReq.getUserPw_2().length() == 0){
+            System.out.println("비밀번호가 입력되지 않았습니다.");
+            return new BaseResponse<>(WRONG_EACH_PW);
+        }
+
+        // 비밀번호 1과 2가 일치하지 않을 때
+        if(!patchUserReq.getUserPw_1().equals(patchUserReq.getUserPw_2())) {
+            System.out.println("비번 불일치");
+            return new BaseResponse<>(WRONG_EACH_PW);
+        }
+
+        // 이름 작성하지 않았을 때
+        if (patchUserReq.getUserName() == null || patchUserReq.getUserName().length() == 0) {
+            return new BaseResponse<>(USERS_EMPTY_NAME);
+        }
+
+        try{
+            PatchUserRes patchUserRes = userService.updateUser(patchUserReq, userIdx);
+            return new BaseResponse<>(patchUserRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    /**
+     * 회원탈퇴 API
+     * [PATCH] /users/{userIdx}/delete
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}/delete")
+    public BaseResponse<String> deleteUser(@PathVariable int userIdx){
+        try {
+          userService.deleteUser(userIdx);
+          return new BaseResponse<>("회원탈퇴 성공");
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }
 

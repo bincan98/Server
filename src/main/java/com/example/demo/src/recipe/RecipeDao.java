@@ -168,8 +168,54 @@ public class RecipeDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdxQuery, int.class);
     }
 
+    // 레시피 작성자 확인
+    public int checkMyRecipe(int userIdx, int RecipeIdx) {
+        String checkMyRecipeQuery = "select exists (select *\n" +
+                "                from Recipe R\n" +
+                "                where R.userIdx = ? and R.Idx =? and R.status = 1);";
+        return this.jdbcTemplate.queryForObject(checkMyRecipeQuery, int.class, userIdx, RecipeIdx);
+    }
+
+    //레시피 사진 삭제 쿼리
+    public void deleteRecipePhoto(int recipeIdx) {
+        String deletePhotoQuery = "delete from RecipePhoto RP\n" +
+                "where RP.recipeIdx = ?;";
+        this.jdbcTemplate.update(deletePhotoQuery, recipeIdx);
+    }
+
+    // 레시피 Url 삭제 쿼리
+    public void deleteRecipeUrl(int recipeIdx) {
+        String deleteUrlQuery = "delete from RecipeUrl RU\n" +
+                "where RU.recipeIdx = ?;";
+        this.jdbcTemplate.update(deleteUrlQuery, recipeIdx);
+    }
+
+    // ingredient 삭제 쿼리
+    public void deleteIngredient(int recipeIdx) {
+        String deleteIngredientQuery = "delete from Ingredient I\n" +
+                "where I.recipeIdx = ?;";
+        this.jdbcTemplate.update(deleteIngredientQuery, recipeIdx);
+    }
 
 
+
+    //레시피 삭제(비활성화)
+    public void deleteRecipe(int recipeIdx) {
+        String deleteRecipeQuery = "update Recipe R\n" +
+                "set R.status = 2\n" +
+                "where R.Idx = ?;";
+        this.jdbcTemplate.update(deleteRecipeQuery, recipeIdx);
+    }
+
+    // 레시피 수정
+    public void updateRecipe(PostRecipeReq postRecipeReq, int recipeIdx){
+        String updateRecipeQuery = "update Recipe R\n" +
+                "set R.recipeName = ?, " +
+                "R.detail = ?, " +
+                "R.makeTime  = ?\n" +
+                "where R.Idx = ?;";
+        this.jdbcTemplate.update(updateRecipeQuery, postRecipeReq.getRecipeName(), postRecipeReq.getDetail(), postRecipeReq.getMakeTime(), recipeIdx);
+    }
 
 }
 

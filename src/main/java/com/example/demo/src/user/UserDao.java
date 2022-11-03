@@ -1,6 +1,7 @@
 package com.example.demo.src.user;
 
 
+import com.example.demo.src.food.model.PostFoodReq;
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -61,7 +62,7 @@ public class UserDao {
     public int checkUserId(String userId){
         String getcheckIdQuery ="select exists(select *\n" +
                                 "from User U\n" +
-                                "where U.userId = ?) checkId";
+                                "where U.userId = ? and U.status = 1) checkId";
         String chkUserIdParm = userId;
         return this.jdbcTemplate.queryForObject(getcheckIdQuery, int.class, chkUserIdParm);
     }
@@ -113,4 +114,30 @@ public class UserDao {
                 chkUserIdParm, chkUserPwParm);
     }
 */
+    /**
+     * user 업데이트
+     * @return void
+     */
+    public void updateUser(PatchUserReq patchUserReq, int userIdx){
+        System.out.println("업데이트 유저Dao호출");
+        String updateUserQuery = "update User U\n" +
+                        "set U.userId = ?,\n" +
+                        "U.userName = ?,\n" +
+                        "U.userPw = ?,\n" +
+                        "U.updateAt = current_timestamp\n" +
+                        "where U.Idx = ?;";
+        this.jdbcTemplate.update(updateUserQuery, patchUserReq.getUserId(), patchUserReq.getUserName(), patchUserReq.getUserPw_1(), userIdx);
+        System.out.println("업데이트 유저Dao리턴");
+    }
+
+    /**
+     * user 삭제(비활성화)
+     * @return void
+     */
+    public void deleteUser(int userIdx){
+        String deleteUserQuery = "update User U\n" +
+                "set U.status = 2\n" +
+                "where U.Idx = ?";
+        this.jdbcTemplate.update(deleteUserQuery, userIdx);
+    }
 }
