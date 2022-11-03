@@ -1,6 +1,7 @@
 package com.example.demo.src.user;
 
 
+import com.example.demo.src.food.model.PostFoodReq;
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -113,4 +114,19 @@ public class UserDao {
                 chkUserIdParm, chkUserPwParm);
     }
 */
+    /**
+     * user 업데이트
+     * @return void
+     */
+    public void updateUser(PatchUserReq patchUserReq, int userIdx){
+        System.out.println("업데이트 유저Dao호출");
+        String updateUserQuery = "update User U\n" +
+                        "set U.userId = ?,\n" +
+                        "U.userName = ?,\n" +
+                        "U.userPw = ?,\n" +
+                        "U.updateAt = current_timestamp\n" +
+                        "where U.Idx = ?;";
+        this.jdbcTemplate.update(updateUserQuery, patchUserReq.getUserId(), patchUserReq.getUserName(), patchUserReq.getUserPw_1(), userIdx);
+        System.out.println("업데이트 유저Dao리턴");
+    }
 }

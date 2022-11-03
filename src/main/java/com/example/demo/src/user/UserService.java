@@ -58,5 +58,15 @@ public class UserService {
     }
 
 
+    //Patch
+    // 회원정보수정 서비스
+    public PatchUserRes updateUser(PatchUserReq patchUserReq, int userIdx) throws BaseException {
+        try {
+            userDao.updateUser(patchUserReq, userIdx);
 
+            return new PatchUserRes(patchUserReq.getUserId(), patchUserReq.getUserPw_1(), patchUserReq.getUserName());
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

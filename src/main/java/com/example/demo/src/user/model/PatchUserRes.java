@@ -7,10 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PatchUserReq {
-    private int userIdx;
+public class PatchUserRes {
     private String userId;
-    private String userPw_1;
-    private String userPw_2;
+    private String userPw;
     private String userName;
 }
