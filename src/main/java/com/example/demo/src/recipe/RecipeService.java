@@ -73,7 +73,49 @@ public class RecipeService {
         }
     }
 
+    //레시피 삭제
+    public int deleteRecipe(int userIdx, int RecipeIdx) throws BaseException{
+        try {
+            int checkMyRecipe = recipeDao.checkMyRecipe(userIdx, RecipeIdx);
+            if(checkMyRecipe == 0){
+                return 0;
+            }
+            else {
+                recipeDao.deleteIngredient(RecipeIdx);
+                recipeDao.deleteRecipePhoto(RecipeIdx);
+                recipeDao.deleteRecipeUrl(RecipeIdx);
+                recipeDao.deleteRecipe(RecipeIdx);
+                return 1;
+            }
+        }
+        catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
+    //레시피 수정
+    public int updateRecipe(int userIdx, int recipeIdx, PostRecipeReq postRecipeReq) throws BaseException{
+        try{
+            int checkMyRecipe = recipeDao.checkMyRecipe(userIdx, recipeIdx);
+            if(checkMyRecipe == 0){
+                return 0;
+            }
+            else {
+                recipeDao.deleteIngredient(recipeIdx);
+                recipeDao.deleteRecipePhoto(recipeIdx);
+                recipeDao.deleteRecipeUrl(recipeIdx);
+                recipeDao.updateRecipe(postRecipeReq, recipeIdx);
+
+                //List newRecipePictureList = recipeDao.createRecipePicture(postRecipeReq, recipeIdx);
+                //List newRecipeUrlList = recipeDao.createRecipeLink(postRecipeReq, recipeIdx);
+                //List newRecipeIgNameList = recipeDao.createRecipeIngredient(postRecipeReq, recipeIdx);
+                return 1;
+            }
+        }
+        catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 
 }
