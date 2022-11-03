@@ -69,4 +69,14 @@ public class UserService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //PATCH
+    // 회원탈퇴 서비스
+    public void deleteUser(int userIdx) throws BaseException {
+        try {
+            userDao.deleteUser(userIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

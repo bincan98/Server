@@ -157,6 +157,20 @@ public class UserController {
         }
     }
 
-
+    /**
+     * 회원탈퇴 API
+     * [PATCH] /users/{userIdx}/delete
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}/delete")
+    public BaseResponse<String> deleteUser(@PathVariable int userIdx){
+        try {
+          userService.deleteUser(userIdx);
+          return new BaseResponse<>("회원탈퇴 성공");
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }
 

@@ -62,7 +62,7 @@ public class UserDao {
     public int checkUserId(String userId){
         String getcheckIdQuery ="select exists(select *\n" +
                                 "from User U\n" +
-                                "where U.userId = ?) checkId";
+                                "where U.userId = ? and U.status = 1) checkId";
         String chkUserIdParm = userId;
         return this.jdbcTemplate.queryForObject(getcheckIdQuery, int.class, chkUserIdParm);
     }
@@ -128,5 +128,16 @@ public class UserDao {
                         "where U.Idx = ?;";
         this.jdbcTemplate.update(updateUserQuery, patchUserReq.getUserId(), patchUserReq.getUserName(), patchUserReq.getUserPw_1(), userIdx);
         System.out.println("업데이트 유저Dao리턴");
+    }
+
+    /**
+     * user 삭제(비활성화)
+     * @return void
+     */
+    public void deleteUser(int userIdx){
+        String deleteUserQuery = "update User U\n" +
+                "set U.status = 2\n" +
+                "where U.Idx = ?";
+        this.jdbcTemplate.update(deleteUserQuery, userIdx);
     }
 }
