@@ -86,15 +86,16 @@ public class UserDao {
      * @return PostLoginRes
      */
     public PostLoginRes loginUser(String userId, String userPw){
-        String getUserQuery = "select U.Idx, U.userName\n" +
-                                "from User U\n" +
-                                "where U.userId = ? and U.userPw = ?";
+        String getUserQuery = "select U.Idx, U.userName, U.userId\n" +
+                "from User U\n" +
+                "where U.userId = ? and U.userPw = ?";
         String chkUserIdParm = userId;
         String chkUserPwParm = userPw;
         return this.jdbcTemplate.queryForObject(getUserQuery,
                 (rs, rowNum) -> new PostLoginRes(
                         rs.getInt("Idx"),
-                        rs.getString("userName")),
+                        rs.getString("userName"),
+                        rs.getString("userId")),
                 chkUserIdParm, chkUserPwParm);
     }
 
