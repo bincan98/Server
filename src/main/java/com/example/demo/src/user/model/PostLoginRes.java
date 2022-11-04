@@ -10,5 +10,6 @@ import lombok.Setter;
 public class PostLoginRes {
     private int Idx;
     private String userName;
+    private String userId;
     //private String jwt;
 }
