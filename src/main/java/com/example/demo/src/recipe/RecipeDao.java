@@ -19,7 +19,7 @@ public class RecipeDao {
     }
 // 레시피 리스트 보기
     public List<GetRecipeRes> getRecommendRecipe(int userIdx){
-        String getRecipeQuery = "select R.Idx, R.recipeName, R.makeTime, UFI.foodName foodHave, RP.photoUrl\n" +
+        String getRecipeQuery = "select R.Idx, R.recipeName, R.makeTime, group_concat(Distinct UFI.foodName) foodHave, RP.photoUrl\n" +
                 "from Recipe R\n" +
                 "join\n" +
                 "(select *\n" +
