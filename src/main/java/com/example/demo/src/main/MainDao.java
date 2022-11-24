@@ -45,13 +45,13 @@ public class MainDao {
 
     public List<GetMainRecipeRes> getMainRecipeResList(int userIdx){
         System.out.println("RecipeDao");
-        String getListQuery = "select R.Idx, R.recipeName, R.makeTime, UFI.foodName foodHave, RP.photoUrl\n" +
+        String getListQuery = "select R.Idx, R.recipeName, R.makeTime, group_concat(Distinct UFI.foodName) foodHave, RP.photoUrl\n" +
                 "from Recipe R\n" +
                 "join\n" +
                 "(select *\n" +
                 "from Ingredient I,(select F.foodName\n" +
                 "from Food F, User U\n" +
-                "where U.Idx = F.userIdx and U.Idx = ?) UF\n" +
+                "where U.Idx = F.userIdx and F.status = 1 and U.Idx = ?) UF\n" +
                 "where UF.foodName like I.igName)UFI on R.Idx = UFI.recipeIdx\n" +
                 "join RecipePhoto RP on R.Idx = RP.recipeIdx\n" +
                 "group by R.Idx";
