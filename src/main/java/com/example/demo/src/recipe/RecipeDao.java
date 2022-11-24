@@ -25,7 +25,7 @@ public class RecipeDao {
                 "(select *\n" +
                 "from Ingredient I,(select F.foodName\n" +
                 "from Food F, User U\n" +
-                "where U.Idx = F.userIdx and U.Idx = ?) UF\n" +
+                "where U.Idx = F.userIdx and F.status = 1 and U.Idx = ?) UF\n" +
                 "where UF.foodName like I.igName)UFI on R.Idx = UFI.recipeIdx\n" +
                 "join RecipePhoto RP on R.Idx = RP.recipeIdx\n" +
                 "group by R.Idx";
